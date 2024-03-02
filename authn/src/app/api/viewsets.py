@@ -175,3 +175,13 @@ class ListUpdateModelViewSet(
     GenericViewSet,
 ):
     pass
+
+
+class CUDModelViewSet(
+    DefaultCreateModelMixin,
+    DefaultUpdateModelMixin,
+    mixins.DestroyModelMixin,
+    ResponseWithRetrieveSerializerMixin,  # Response with retrieve or default serializer
+    GenericViewSet,
+):
+    pass
