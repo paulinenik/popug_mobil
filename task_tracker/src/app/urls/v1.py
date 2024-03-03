@@ -6,7 +6,6 @@ from django.urls import path
 
 app_name = "api_v1"
 urlpatterns = [
-    path("auth/", include("a12n.api.urls")),
     path("users/", include("users.api.urls")),
     path("healthchecks/", include("django_healthchecks.urls")),
     path("docs/schema/", SpectacularAPIView.as_view(), name="schema"),
