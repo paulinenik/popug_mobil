@@ -22,6 +22,7 @@ dependencies = [
     "Pillow",
     "psycopg2-binary",
     "typing-extensions==4.8.0",
+    "confluent-kafka"
 ]
 
 
