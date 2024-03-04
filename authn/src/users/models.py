@@ -1,5 +1,5 @@
-import uuid
 from typing import ClassVar
+import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import UserManager as _UserManager
@@ -17,6 +17,4 @@ class User(AbstractUser):  # noqa
         DEVELOPER = "developer", "Developer"
 
     role = models.CharField(choices=Roles.choices, max_length=32)
-    public_id = models.UUIDField(unique=True, editable=False, default=uuid.uuid4)
-
-    USERNAME_FIELD = "email"
+    public_id = models.UUIDField(default=uuid.uuid4, unique=True)
