@@ -4,13 +4,9 @@ from typing import Any
 
 from django.db.models import Q
 
+from app.kafka.producer import Producer
 from app.services import BaseService
 from users.models import User
-
-
-class Producer:
-    def call(self, *args: Any, **kwargs: Any) -> Any:
-        pass
 
 
 @dataclass
@@ -27,4 +23,4 @@ class TaskAssigner(BaseService):
         return random.choice(developers)
 
     def produce_business_event(self) -> None:
-        Producer().call("TaskAssigned", topic="tasks")
+        Producer(event="TaskAssigned", topic="tasks-lifecycle", data={"task_id": self.instance.public_id, "assignee_id": self.instance.assignee.public_id})

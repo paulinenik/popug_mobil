@@ -1,12 +1,11 @@
 from dataclasses import dataclass
 from typing import Any
 
+from app.kafka.producer import Producer
 from app.services import BaseService
-
-
-class Producer:
-    def call(self, *args: Any, **kwargs: Any) -> Any:
-        pass
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from tasks.models import Task
 
 
 @dataclass
@@ -19,4 +18,4 @@ class TaskMarkCompleted(BaseService):
         self.produce_business_event()
 
     def produce_business_event(self) -> None:
-        Producer().call("TaskCompleted", topic="tasks")
+        Producer(event="TaskCompleted", topic="tasks-lifecycle", data={"task_id": self.instance.public_id, "assignee_id": self.instance.assignee.public_id})()
