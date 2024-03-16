@@ -9,7 +9,6 @@ from app.models import TimestampedModel
 # Rename this file to singular form of your entity, e.g. "orders.py -> order.py". Add your class to __init__.py.
 class Task(TimestampedModel):
     title = models.CharField(max_length=255)
-    description = models.TextField()
 
     class Statuses(TextChoices):
         IN_PROGRESS = "in_progress", "In Progress"

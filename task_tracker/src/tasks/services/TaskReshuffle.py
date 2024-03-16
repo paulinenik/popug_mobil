@@ -12,10 +12,11 @@ class Producer:
 
 
 @dataclass
-class TaskReassigner(BaseService):
+class TaskReshuffle(BaseService):
     def act(self) -> None:
         tasks = self.get_tasks()
 
+        # TODO: Отправлять события батчем
         for task in tasks.iterator():
             TaskAssigner(task)()
 

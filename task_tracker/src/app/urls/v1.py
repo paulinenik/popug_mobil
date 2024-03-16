@@ -10,4 +10,5 @@ urlpatterns = [
     path("healthchecks/", include("django_healthchecks.urls")),
     path("docs/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("docs/swagger/", SpectacularSwaggerView.as_view(url_name="schema")),
+    path("tasks/", include("tasks.api.urls")),
 ]

@@ -3,6 +3,7 @@
 APPS = [
     "app",
     "users",
+    "tasks",
 ]
 
 THIRD_PARTY_APPS = [

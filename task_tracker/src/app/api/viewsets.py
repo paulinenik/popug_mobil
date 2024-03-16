@@ -9,7 +9,8 @@ from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 from rest_framework.viewsets import GenericViewSet
 
-__all__ = ["DefaultModelViewSet"]
+__all__ = ["DefaultModelViewSet", "ReadonlyModelViewSet", "ListOnlyModelViewSet", "UpdateOnlyModelViewSet",
+           "DefaultRetrieveDestroyListViewSet", "ListUpdateModelViewSet", "CreateRetrieveModelViewSet"]
 
 
 class BaseGenericViewSet(Protocol):
@@ -171,6 +172,15 @@ class DefaultRetrieveDestroyListViewSet(
 class ListUpdateModelViewSet(
     DefaultUpdateModelMixin,
     mixins.ListModelMixin,
+    ResponseWithRetrieveSerializerMixin,
+    GenericViewSet,
+):
+    pass
+
+
+class CreateRetrieveModelViewSet(
+    DefaultCreateModelMixin,
+    mixins.RetrieveModelMixin,
     ResponseWithRetrieveSerializerMixin,
     GenericViewSet,
 ):
