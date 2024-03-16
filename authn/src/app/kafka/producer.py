@@ -9,7 +9,7 @@ from app.services import BaseService
 
 @dataclass
 class Producer(BaseService):
-    key: str
+    event: str
     topic: str
     data: dict
 
@@ -19,6 +19,6 @@ class Producer(BaseService):
         return KafkaProducer(conf)
 
     def act(self):
-        print(f"Sending to Kafka: topic: {self.topic}, key: {self.key}, body: {self.data}")
-        self.producer.produce(topic=self.topic, key=self.key, value=json.dumps(self.data))
+        print(f"Sending to Kafka: topic: {self.topic}, key: {self.event}, body: {self.data}")
+        self.producer.produce(topic=self.topic, key=self.event, value=json.dumps(self.data))
         self.producer.flush()

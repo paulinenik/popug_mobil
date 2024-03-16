@@ -9,14 +9,10 @@ from rest_framework.response import Response
 from django.db.models import QuerySet
 
 from app.api.viewsets import CUDModelViewSet
+from app.kafka.producer import Producer
 from users.api.serializers import UserRegisterSerializer
 from users.api.serializers import UserSerializer
 from users.models import User
-
-
-class Producer:
-    def call(self, *args: Any, **kwargs: Any) -> None:
-        pass
 
 
 class SelfView(GenericAPIView):
@@ -59,14 +55,15 @@ class UserViewSet(CUDModelViewSet):
         user = serializer.save()
         user.set_password(serializer.validated_data["password"])
         user.save()
-        Producer().call("UserCreated", topic="users-stream")
+        Producer(event="UserCreated", topic="users-stream", data=UserSerializer(user).data)
         return user
 
     def perform_update(self, serializer: Any) -> "User":  # type: ignore
         user = super().perform_update(serializer)
-        Producer().call("UserUpdated", topic="users-stream")
+        Producer(event="UserUpdated", topic="users-stream", data=serializer.data)
         return user
 
     def perform_destroy(self, instance: "User") -> None:
+        public_id = instance.public_id
         super().perform_destroy(instance)
-        Producer().call("UserDeleted", topic="users-stream")
+        Producer(event="UserDeleted", topic="users-stream", data={"public_id": public_id})
