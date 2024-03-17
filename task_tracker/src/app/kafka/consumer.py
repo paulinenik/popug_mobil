@@ -1,6 +1,7 @@
 import json
 import sys
 import threading
+from typing import Callable
 
 from confluent_kafka import Consumer as KafkaConsumer
 from confluent_kafka import KafkaError
@@ -16,13 +17,13 @@ def create_user(data):
 
 class Consumer(threading.Thread):
 
-    def __init__(self, event_handler, topic):
+    def __init__(self, event_handlers: dict[str, Callable], topic: str):
         super().__init__()
-        self.event_handler = event_handler
+        self.event_handlers = event_handlers
         self.topic = topic
 
-        if not callable(self.event_handler):
-            raise ValueError("event_handler must be a callable")
+        if not isinstance(self.event_handlers, dict):
+            raise ValueError("event_handler must be a dict")
 
         conf = {"bootstrap.servers": "localhost:9092", "auto.offset.reset": "smallest", "group.id": "user_group"}
         self.consumer = KafkaConsumer(conf)
@@ -42,7 +43,16 @@ class Consumer(threading.Thread):
                     raise KafkaException(msg.error())
                 else:
                     data = json.loads(msg.value().decode("utf-8"))
-                    self.event_handler(data)
+                    key = msg.key()  # Get the key associated with the message
+                    self._get_event_handler(key)(data)
         finally:
             self.consumer.close()
             print("Consumer closed")
+
+    def _get_event_handler(self, key: str) -> Callable:
+        event_handler = self.event_handlers.get(key)
+        if not event_handler:
+            raise ValueError(f"No event handler found for event {key}")
+        if not callable(event_handler):
+            raise ValueError(f"Event handler for event {key} is not callable")
+        return event_handler

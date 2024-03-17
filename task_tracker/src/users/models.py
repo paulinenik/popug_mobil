@@ -16,4 +16,4 @@ class User(AbstractUser):  # noqa
         DEVELOPER = "developer", "Developer"
 
     role = models.CharField(choices=Roles.choices, max_length=32)
-    public_id = models.UUIDField(default=uuid.uuid4, unique=True)
+    public_id = models.UUIDField(unique=True)
