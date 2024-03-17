@@ -40,4 +40,11 @@ celery.conf.beat_schedule = {
             "expires": 60,
         },
     },
+    "make-daily-payments": {
+        "task": "make_daily_payments",
+        "schedule": crontab(minute=0, hour=0),
+        "options": {
+            "expires": 600,
+        },
+    },
 }

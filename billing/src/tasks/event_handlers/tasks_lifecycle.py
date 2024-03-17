@@ -12,7 +12,7 @@ def task_assigned_event_handler(data):
     TransactionCreator(
         user=assignee,
         type=task.Types.TASK_FEE,
-        amount=task.fee,
+        amount=(task.fee * -1),
     )()
 
 

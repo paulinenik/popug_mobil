@@ -15,3 +15,7 @@ class Transaction(TimestampedModel):
         PAYMENT = "payment", "Payment"
 
     type = models.CharField(choices=Types.choices, max_length=32)
+
+    @property
+    def absolute_amount(self):
+        return abs(self.amount)
