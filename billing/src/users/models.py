@@ -14,5 +14,5 @@ class User(AbstractUser):  # noqa
         MANAGER = "manager", "Manager"
         DEVELOPER = "developer", "Developer"
 
-    role = models.CharField(choices=Roles.choices, max_length=32)
+    role = models.CharField(choices=Roles.choices, max_length=32, blank=True)
     public_id = models.UUIDField(unique=True)

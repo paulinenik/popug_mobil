@@ -4,6 +4,8 @@
 #
 #    pip-compile --extra=dev --output-file=dev-requirements.txt pyproject.toml
 #
+amqp==5.2.0
+    # via kombu
 asgiref==3.7.2
     # via django
 astor==0.8.1
@@ -25,10 +27,14 @@ autoflake==1.7.0
     # via billing (pyproject.toml)
 bcrypt==4.0.1
     # via billing (pyproject.toml)
+billiard==4.2.0
+    # via celery
 black==23.11.0
     # via
     #   billing (pyproject.toml)
     #   flake8-black
+celery==5.3.6
+    # via billing (pyproject.toml)
 certifi==2023.11.17
     # via
     #   django-healthchecks
@@ -41,12 +47,24 @@ charset-normalizer==3.3.2
 click==8.1.7
     # via
     #   black
+    #   celery
     #   click-default-group
+    #   click-didyoumean
+    #   click-plugins
+    #   click-repl
     #   dotenv-linter
 click-default-group==1.2.4
     # via dotenv-linter
+click-didyoumean==0.3.0
+    # via celery
+click-plugins==1.1.1
+    # via celery
+click-repl==0.3.0
+    # via celery
 cognitive-complexity==1.3.0
     # via flake8-cognitive-complexity
+confluent-kafka==2.3.0
+    # via billing (pyproject.toml)
 cryptography==41.0.5
     # via pyjwt
 decorator==5.1.1
@@ -193,6 +211,8 @@ jsonschema==4.20.0
     # via drf-spectacular
 jsonschema-specifications==2023.11.1
     # via jsonschema
+kombu==5.3.5
+    # via celery
 lazy-object-proxy==1.9.0
     # via astroid
 matplotlib-inline==0.1.6
@@ -228,7 +248,10 @@ pluggy==1.3.0
 ply==3.11
     # via dotenv-linter
 prompt-toolkit==3.0.41
-    # via ipython
+    # via
+    #   billing (pyproject.toml)
+    #   click-repl
+    #   ipython
 psycopg2-binary==2.9.9
     # via billing (pyproject.toml)
 ptyprocess==0.7.0
@@ -274,6 +297,8 @@ pytest-randomly==3.15.0
     # via billing (pyproject.toml)
 python-dateutil==2.8.2
     # via
+    #   billing (pyproject.toml)
+    #   celery
     #   faker
     #   freezegun
 pytz==2023.3.post1
@@ -342,6 +367,8 @@ typing-extensions==4.8.0
     #   dotenv-linter
     #   flake8-pie
     #   mypy
+tzdata==2024.1
+    # via celery
 uritemplate==4.1.1
     # via drf-spectacular
 urllib3==2.1.0
@@ -349,8 +376,15 @@ urllib3==2.1.0
     #   requests
     #   sentry-sdk
     #   types-requests
+vine==5.1.0
+    # via
+    #   amqp
+    #   celery
+    #   kombu
 wcwidth==0.2.11
-    # via prompt-toolkit
+    # via
+    #   billing (pyproject.toml)
+    #   prompt-toolkit
 whitenoise==6.6.0
     # via billing (pyproject.toml)
 wrapt==1.16.0

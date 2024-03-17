@@ -16,14 +16,14 @@ def generate_task_reward():
 
 
 class Task(TimestampedModel):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, blank=True)
 
     class Statuses(TextChoices):
         IN_PROGRESS = "in_progress", "In Progress"
         DONE = "done", "Done"
 
     status = models.CharField(choices=Statuses.choices, max_length=32, default=Statuses.IN_PROGRESS)
-    assignee = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="tasks")
+    assignee = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="tasks", blank=True)
     public_id = models.UUIDField(unique=True)
     fee = models.IntegerField(default=generate_task_fee)
     reward = models.IntegerField(default=generate_task_reward)

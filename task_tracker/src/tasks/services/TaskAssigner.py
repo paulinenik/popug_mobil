@@ -7,6 +7,9 @@ from django.db.models import Q
 from app.kafka.producer import Producer
 from app.services import BaseService
 from users.models import User
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from tasks.models import Task
 
 
 @dataclass

@@ -1,12 +1,12 @@
+from django.db import models
 from django.db.models.enums import TextChoices
 
-from app import models
 from app.models import TimestampedModel
 
 
 class Transaction(TimestampedModel):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="transactions")
-    task = models.ForeignKey("tasks.Task", on_delete=models.CASCADE, related_name="transactions")
+    task = models.ForeignKey("tasks.Task", on_delete=models.CASCADE, related_name="transactions", null=True, blank=True)
     amount = models.IntegerField()
 
     class Types(TextChoices):
