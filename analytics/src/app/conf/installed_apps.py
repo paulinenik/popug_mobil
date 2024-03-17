@@ -4,6 +4,7 @@ APPS = [
     "app",
     "users",
     "tasks",
+    "balance",
 ]
 
 THIRD_PARTY_APPS = [

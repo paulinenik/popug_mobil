@@ -8,10 +8,11 @@ from django.utils import timezone
 
 from app.services import BaseService
 from balance.models.transaction import Transaction
+from users.models import User
 
 
 @dataclass
-class ManagerIncomePerWeek(BaseService):
+class FinanceAnalytics(BaseService):
     @property
     def today(self) -> datetime.date:
         return timezone.now().date()
@@ -19,7 +20,10 @@ class ManagerIncomePerWeek(BaseService):
     def act(self) -> dict:
         return {
             "today": self._get_today_income(),
-            "income_per_day": self._get_income_for_last_week(),
+            "bankrupted_today": self._get_bankrupted_today(),
+            "most_expensive_task_today": self._get_most_expensive_task("today"),
+            "most_expensive_task_this_week": self._get_most_expensive_task("week"),
+            "most_expensive_task_this_month": self._get_most_expensive_task("month"),
         }
 
     def _get_today_income(self) -> int:
@@ -40,3 +44,19 @@ class ManagerIncomePerWeek(BaseService):
             transactions.filter(type=Transaction.Types.TASK_FEE).aggregate(amount=Sum("amount"))["amount"]
             - transactions.filter(type=Transaction.Types.TASK_REWARD).aggregate(amount=Sum("amount"))["amount"]
         )
+
+    def _get_bankrupted_today(self) -> int:
+        return User.objects.annotate(balance=Sum("transactions__amount")).filter(balance__lt=0).count()
+
+    def _get_most_expensive_task(self, period: "str") -> "int | None":
+        if period == "today":
+            filter_args = {"created_at__date": self.today}
+        elif period == "week":
+            filter_args = {"created_at__gte": self.today - timedelta(days=7)}
+        elif period == "month":
+            filter_args = {"created_at__gte": self.today - timedelta(days=30)}
+        else:
+            raise ValueError(f"Invalid period: {period}")
+
+        transaction = Transaction.objects.filter(**filter_args).filter(type=Transaction.Types.TASK_REWARD).order_by("amount").first()
+        return transaction.amount if transaction else None
