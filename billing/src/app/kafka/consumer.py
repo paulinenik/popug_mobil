@@ -16,7 +16,6 @@ def create_user(data):
 
 
 class Consumer(threading.Thread):
-
     def __init__(self, event_handlers: dict[str, Callable], topic: str):
         super().__init__()
         self.event_handlers = event_handlers

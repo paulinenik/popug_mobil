@@ -23,7 +23,7 @@ def task_completed_event_handler(data):
         defaults={
             "status": Task.Statuses.DONE,
             "assignee": assignee,
-        }
+        },
     )
     TransactionCreator(
         user=assignee,

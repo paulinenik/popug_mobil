@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-
-from app.services import BaseService
 from typing import TYPE_CHECKING
 
+from app.services import BaseService
 from balance.models.transaction import Transaction
 
 if TYPE_CHECKING:

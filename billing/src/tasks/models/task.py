@@ -1,10 +1,9 @@
-import uuid
 import random
 
 from django.db import models
 from django.db.models import TextChoices
 
-from app.models import TimestampedModel
+from app.models import DefaultModel
 
 
 def generate_task_fee():
@@ -15,7 +14,9 @@ def generate_task_reward():
     return random.randint(20, 40)
 
 
-class Task(TimestampedModel):
+class Task(DefaultModel):
+    created = models.DateTimeField(blank=True, null=True, db_index=True)
+    modified = models.DateTimeField(null=True, blank=True)
     title = models.CharField(max_length=255, blank=True)
 
     class Statuses(TextChoices):
@@ -27,5 +28,3 @@ class Task(TimestampedModel):
     public_id = models.UUIDField(unique=True)
     fee = models.IntegerField(default=generate_task_fee)
     reward = models.IntegerField(default=generate_task_reward)
-
-
